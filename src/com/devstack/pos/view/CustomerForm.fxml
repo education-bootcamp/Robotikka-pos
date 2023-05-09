@@ -30,7 +30,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="480.0" layoutY="11.0" style="-fx-background-color: #2980b9;" text="+ New Customer" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="480.0" layoutY="11.0" onAction="#btnNewCustomerOnAction" style="-fx-background-color: #2980b9;" text="+ New Customer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
