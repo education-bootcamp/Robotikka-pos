@@ -1,5 +1,6 @@
 package com.devstack.pos.controller;
 
+import com.devstack.pos.dao.DatabaseAccessCode;
 import com.devstack.pos.util.PasswordManager;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -26,17 +27,8 @@ public class SignupFormController {
     }
 
     public void btnRegisterNowOnAction(ActionEvent actionEvent) {
-
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                    "root","1234");
-            String sql="INSERT INTO user VALUES (?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, txtEmail.getText());
-            preparedStatement.setString(2, PasswordManager.encryptPassword(textPassword.getText()));
-
-           if (preparedStatement.executeUpdate()>0){
+           if (DatabaseAccessCode.createUser(txtEmail.getText(),textPassword.getText())){
                new Alert(Alert.AlertType.CONFIRMATION, "User Saved!").show();
                clearFields();
            }else{

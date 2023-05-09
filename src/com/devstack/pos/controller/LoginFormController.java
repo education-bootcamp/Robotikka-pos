@@ -1,5 +1,7 @@
 package com.devstack.pos.controller;
 
+import com.devstack.pos.dao.DatabaseAccessCode;
+import com.devstack.pos.dto.UserDto;
 import com.devstack.pos.util.PasswordManager;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -25,16 +27,9 @@ public class LoginFormController {
     public void btnSignInOnAction(ActionEvent actionEvent) {
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                    "root", "1234");
-            String sql = "SELECT * FROM user WHERE email=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, txtEmail.getText());
-
-            ResultSet set = preparedStatement.executeQuery();
-            if (set.next()) {
-                if (PasswordManager.checkPassword(txtPassword.getText(), set.getString("password"))) {
+            UserDto ud= DatabaseAccessCode.findUser(txtEmail.getText());
+            if (ud!=null) {
+                if (PasswordManager.checkPassword(txtPassword.getText(), ud.getPassword())) {
                     setUi("DashboardForm");
                 } else {
                     new Alert(Alert.AlertType.WARNING, "check your password and try again!").show();
@@ -53,10 +48,10 @@ public class LoginFormController {
 
     private void setUi(String url) throws IOException {
         Stage stage = (Stage) context.getScene().getWindow();
+        stage.centerOnScreen();
         stage.setScene(
                 new Scene(FXMLLoader.load(getClass().getResource("../view/" + url + ".fxml")))
         );
-        stage.centerOnScreen();
     }
 
 }
