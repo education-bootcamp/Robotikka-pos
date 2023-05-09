@@ -1,5 +1,6 @@
 package com.devstack.pos.dao;
 
+import com.devstack.pos.db.DbConnection;
 import com.devstack.pos.dto.CustomerDto;
 import com.devstack.pos.dto.UserDto;
 import com.devstack.pos.util.PasswordManager;
@@ -11,25 +12,16 @@ import java.util.List;
 public class DatabaseAccessCode {
 
     //====User management===============
-    public static boolean createUser(
-            String email,String password
-    ) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
+    public static boolean createUser(String email,String password) throws ClassNotFoundException, SQLException {
         String sql="INSERT INTO user VALUES (?,?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, PasswordManager.encryptPassword(password));
         return preparedStatement.executeUpdate()>0;
     }
-
     public static UserDto findUser(String email) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root", "1234");
         String sql = "SELECT * FROM user WHERE email=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
 
         ResultSet set = preparedStatement.executeQuery();
@@ -46,11 +38,8 @@ public class DatabaseAccessCode {
 
     //====Customer management===============
     public static boolean createCustomer(String email,String name, String contact, double salary) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="INSERT INTO customer VALUES (?,?,?,?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, name);
         preparedStatement.setString(3, contact);
@@ -58,11 +47,8 @@ public class DatabaseAccessCode {
         return preparedStatement.executeUpdate()>0;
     }
     public static boolean updateCustomer(String email,String name, String contact, double salary) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="UPDATE customer SET name=?, contact=?, salary=? WHERE email=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, contact);
         preparedStatement.setDouble(3, salary);
@@ -70,11 +56,8 @@ public class DatabaseAccessCode {
         return preparedStatement.executeUpdate()>0;
     }
     public static CustomerDto findCustomer(String email) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="SELECT * FROM customer WHERE email=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
         ResultSet resultSet= preparedStatement.executeQuery();
         if (resultSet.next()){
@@ -88,20 +71,14 @@ public class DatabaseAccessCode {
         return null;
     }
     public static boolean deleteCustomer(String email) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="DELETE FROM Customer WHERE email=?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
         return preparedStatement.executeUpdate()>0;
     }
     public static List<CustomerDto> findAllCustomers() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="SELECT * FROM customer";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         ResultSet resultSet= preparedStatement.executeQuery();
 
         List<CustomerDto> dtos= new ArrayList<>();
@@ -119,11 +96,8 @@ public class DatabaseAccessCode {
 
         searchText="%"+searchText+"%";
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/robotikka",
-                "root","1234");
         String sql="SELECT * FROM customer WHERE email LIKE ? || name LIKE ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1,searchText);
         preparedStatement.setString(2,searchText);
         ResultSet resultSet= preparedStatement.executeQuery();
