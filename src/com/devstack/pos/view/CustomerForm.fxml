@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,9 +20,21 @@
          </font>
       </Label>
       <Separator layoutX="13.0" layoutY="42.0" prefHeight="2.0" prefWidth="574.0" />
-      <JFXButton buttonType="RAISED" layoutX="244.0" layoutY="11.0" style="-fx-background-color: #7f8c8d;" text="Back to home" textFill="WHITE" />
-      <JFXButton buttonType="RAISED" layoutX="343.0" layoutY="11.0" style="-fx-background-color: #16a085;" text="Mange Loyalty Cards" textFill="WHITE" />
-      <JFXButton buttonType="RAISED" layoutX="480.0" layoutY="11.0" style="-fx-background-color: #2980b9;" text="+ New Customer" textFill="WHITE" />
+      <JFXButton buttonType="RAISED" layoutX="244.0" layoutY="11.0" onAction="#btnBackToHomeOnAction" style="-fx-background-color: #7f8c8d;" text="Back to home" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="343.0" layoutY="11.0" style="-fx-background-color: #16a085;" text="Mange Loyalty Cards" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="480.0" layoutY="11.0" style="-fx-background-color: #2980b9;" text="+ New Customer" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
       <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="13.0" layoutY="56.0" prefHeight="29.0" prefWidth="177.0" promptText="email">
          <font>
             <Font name="System Bold" size="13.0" />
@@ -46,6 +59,9 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <TextField fx:id="txtSearch" layoutX="14.0" layoutY="149.0" prefHeight="25.0" prefWidth="574.0" promptText="search here" />
       <TableView fx:id="tbl" layoutX="13.0" layoutY="186.0" prefHeight="200.0" prefWidth="574.0">
