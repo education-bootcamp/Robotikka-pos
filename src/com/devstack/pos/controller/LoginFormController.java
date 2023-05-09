@@ -35,7 +35,7 @@ public class LoginFormController {
             ResultSet set = preparedStatement.executeQuery();
             if (set.next()) {
                 if (PasswordManager.checkPassword(txtPassword.getText(), set.getString("password"))) {
-                    System.out.println("Completed");
+                    setUi("DashboardForm");
                 } else {
                     new Alert(Alert.AlertType.WARNING, "check your password and try again!").show();
                 }
@@ -44,11 +44,10 @@ public class LoginFormController {
             }
 
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-
 
     }
 
