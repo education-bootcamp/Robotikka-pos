@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class CustomerFormController {
 
@@ -54,6 +55,14 @@ public class CustomerFormController {
                 setData(newValue);
             }
         });
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchText=newValue;
+            try {
+                loadAllCustomers(searchText);
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
     }
 
@@ -70,7 +79,8 @@ public class CustomerFormController {
     private void loadAllCustomers(String searchText) throws SQLException, ClassNotFoundException {
         ObservableList<CustomerTm> observableList = FXCollections.observableArrayList();
         int counter=1;
-        for (CustomerDto dto: DatabaseAccessCode.searchCustomers(searchText)){
+        for (CustomerDto dto:
+                searchText.length()>0?DatabaseAccessCode.searchCustomers(searchText):DatabaseAccessCode.findAllCustomers()){
             Button btn = new Button("Delete");
             CustomerTm tm = new CustomerTm(
                     counter,dto.getEmail(), dto.getName(), dto.getContact(), dto.getSalary(),
@@ -78,6 +88,25 @@ public class CustomerFormController {
             );
             observableList.add(tm);
             counter++;
+
+            btn.setOnAction((e)->{
+                try{
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?", ButtonType.YES,ButtonType.NO);
+                    Optional<ButtonType> selectedButtonType = alert.showAndWait();
+                    if (selectedButtonType.equals(ButtonType.YES)){
+                        if (DatabaseAccessCode.deleteCustomer(dto.getEmail())){
+                            new Alert(Alert.AlertType.CONFIRMATION, "Customer Deleted!").show();
+                            loadAllCustomers(searchText);
+                        }else{
+                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                        }
+                    }
+                }catch (SQLException | ClassNotFoundException exception){
+                    exception.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, exception.getMessage()).show();
+                }
+            });
+
         }
         tbl.setItems(observableList);
     }
