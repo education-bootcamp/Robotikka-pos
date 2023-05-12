@@ -20,13 +20,13 @@ import java.util.List;
 
 public class DatabaseAccessCode {
 
-    CustomerDao customerDao= new CustomerDaoImpl();
+    CustomerDao customerDao =  new CustomerDaoImpl();
     ProductDao productDao = new ProductDaoImpl();
     UserDao userDao= new UserDaoImpl();
 
     //====User management===============
     public boolean createUser(String email, String password) throws ClassNotFoundException, SQLException {
-        return userDao.saveUser(
+        return userDao.save(
                 new User(email,password)
         );
     }
@@ -36,7 +36,7 @@ public class DatabaseAccessCode {
         PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
         preparedStatement.setString(1, email);
 
-        User user = userDao.findUser(email);
+        User user = userDao.find(email);
         if (user!=null) {
             return new UserDto(
                     user.getEmail(),
@@ -50,19 +50,19 @@ public class DatabaseAccessCode {
 
     //====Customer management===============
     public boolean createCustomer(String email, String name, String contact, double salary) throws ClassNotFoundException, SQLException {
-        return customerDao.saveCustomer(
+        return customerDao.save(
                 new Customer(email,name,contact,salary)
         );
     }
 
     public boolean updateCustomer(String email, String name, String contact, double salary) throws ClassNotFoundException, SQLException {
-       return customerDao.updateCustomer(
+       return customerDao.update(
                new Customer(email,name,contact,salary)
        );
     }
 
     public CustomerDto findCustomer(String email) throws ClassNotFoundException, SQLException {
-        Customer customer = customerDao.findCustomer(email);
+        Customer customer = customerDao.find(email);
         if (customer!=null) {
             return new CustomerDto(
                     customer.getEmail(),
@@ -75,13 +75,13 @@ public class DatabaseAccessCode {
     }
 
     public boolean deleteCustomer(String email) throws ClassNotFoundException, SQLException {
-       return customerDao.deleteCustomer(email);
+       return customerDao.delete(email);
     }
 
     public List<CustomerDto> findAllCustomers() throws ClassNotFoundException, SQLException {
         List<CustomerDto> dtos = new ArrayList<>();
 
-        for (Customer c:customerDao.findAllCustomers()
+        for (Customer c:customerDao.findAll()
              ) {
             dtos.add(new CustomerDto(
                     c.getEmail(),
@@ -117,7 +117,7 @@ public class DatabaseAccessCode {
 
     public  boolean saveProduct(int code, String description) throws SQLException, ClassNotFoundException {
 
-        return productDao.saveProduct(
+        return productDao.save(
                 new Product(code,description)
         );
     }
