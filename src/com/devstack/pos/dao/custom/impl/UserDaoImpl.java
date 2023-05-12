@@ -2,7 +2,6 @@ package com.devstack.pos.dao.custom.impl;
 
 import com.devstack.pos.dao.custom.UserDao;
 import com.devstack.pos.db.DbConnection;
-import com.devstack.pos.dto.UserDto;
 import com.devstack.pos.entity.User;
 import com.devstack.pos.util.PasswordManager;
 

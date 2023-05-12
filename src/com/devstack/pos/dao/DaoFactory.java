@@ -15,14 +15,14 @@ public class DaoFactory {
         return (daoFactory == null) ? daoFactory = new DaoFactory() : daoFactory;
     }
 
-    public SuperDao getDao(DaoType daoType) {
+    public <T> T getDao(DaoType daoType) {
         switch (daoType) {
             case USER:
-                return new UserDaoImpl();
+                return (T) new UserDaoImpl();
             case CUSTOMER:
-                return new CustomerDaoImpl();
+                return (T) new CustomerDaoImpl();
             case PRODUCT:
-                return new ProductDaoImpl();
+                return (T) new ProductDaoImpl();
             default:
                 return null;
         }
