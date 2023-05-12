@@ -15,12 +15,12 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="26.0" layoutY="86.0" prefHeight="29.0" prefWidth="290.0" promptText="email">
+      <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="26.0" layoutY="86.0" prefHeight="29.0" prefWidth="290.0" promptText="email" text="hasika@gmail.com">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="26.0" layoutY="154.0" prefHeight="29.0" prefWidth="290.0" promptText="Password">
+      <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="26.0" layoutY="154.0" prefHeight="29.0" prefWidth="290.0" promptText="Password" text="1234">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
