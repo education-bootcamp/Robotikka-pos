@@ -62,4 +62,16 @@ public class ProductDaoImpl implements ProductDao {
         }
         return productList;
     }
+
+    @Override
+    public int getLastProductId() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT code FROM product ORDER BY code DESC LIMIT 1";
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return (resultSet.getInt(1)+1);
+        }
+        return 1;
+    }
 }
