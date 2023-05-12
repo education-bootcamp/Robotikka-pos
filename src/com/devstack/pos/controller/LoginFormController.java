@@ -27,7 +27,7 @@ public class LoginFormController {
     public void btnSignInOnAction(ActionEvent actionEvent) {
 
         try {
-            UserDto ud= DatabaseAccessCode.findUser(txtEmail.getText());
+            UserDto ud= new DatabaseAccessCode().findUser(txtEmail.getText());
             if (ud!=null) {
                 if (PasswordManager.checkPassword(txtPassword.getText(), ud.getPassword())) {
                     setUi("DashboardForm");
