@@ -1,6 +1,6 @@
 package com.devstack.pos.controller;
 
-import com.devstack.pos.dao.DatabaseAccessCode;
+import com.devstack.pos.bo.custom.impl.UserBoImpl;
 import com.devstack.pos.dto.UserDto;
 import com.devstack.pos.util.PasswordManager;
 import com.jfoenix.controls.JFXPasswordField;
@@ -27,7 +27,7 @@ public class LoginFormController {
     public void btnSignInOnAction(ActionEvent actionEvent) {
 
         try {
-            UserDto ud= new DatabaseAccessCode().findUser(txtEmail.getText());
+            UserDto ud= new UserBoImpl().findUser(txtEmail.getText());
             if (ud!=null) {
                 if (PasswordManager.checkPassword(txtPassword.getText(), ud.getPassword())) {
                     setUi("DashboardForm");
