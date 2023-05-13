@@ -1,7 +1,10 @@
 package com.devstack.pos.controller;
 
+import com.devstack.pos.bo.BoFactory;
+import com.devstack.pos.bo.custom.UserBo;
 import com.devstack.pos.bo.custom.impl.UserBoImpl;
 import com.devstack.pos.dto.UserDto;
+import com.devstack.pos.enums.BoType;
 import com.devstack.pos.util.PasswordManager;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -20,6 +23,8 @@ public class LoginFormController {
     public JFXTextField txtEmail;
     public JFXPasswordField txtPassword;
 
+    UserBo bo= BoFactory.getInstance().getBo(BoType.USER);
+
     public void btnCreateAnAccountOnAction(ActionEvent actionEvent) throws IOException {
         setUi("SignupForm");
     }
@@ -27,7 +32,7 @@ public class LoginFormController {
     public void btnSignInOnAction(ActionEvent actionEvent) {
 
         try {
-            UserDto ud= new UserBoImpl().findUser(txtEmail.getText());
+            UserDto ud= bo.findUser(txtEmail.getText());
             if (ud!=null) {
                 if (PasswordManager.checkPassword(txtPassword.getText(), ud.getPassword())) {
                     setUi("DashboardForm");

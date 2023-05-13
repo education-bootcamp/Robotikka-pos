@@ -1,7 +1,10 @@
 package com.devstack.pos.controller;
 
+import com.devstack.pos.bo.BoFactory;
+import com.devstack.pos.bo.custom.UserBo;
 import com.devstack.pos.bo.custom.impl.UserBoImpl;
 import com.devstack.pos.dto.UserDto;
+import com.devstack.pos.enums.BoType;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
@@ -19,13 +22,15 @@ public class SignupFormController {
     public JFXTextField txtEmail;
     public JFXPasswordField textPassword;
 
+    UserBo bo= BoFactory.getInstance().getBo(BoType.USER);
+
     public void btnAlreadyHaveAnAccountOnAction(ActionEvent actionEvent) throws IOException {
         setUi("LoginForm");
     }
 
     public void btnRegisterNowOnAction(ActionEvent actionEvent) {
         try {
-            if (new UserBoImpl().saveUser(new UserDto(txtEmail.getText(), textPassword.getText()))) {
+            if (bo.saveUser(new UserDto(txtEmail.getText(), textPassword.getText()))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "User Saved!").show();
                 clearFields();
             } else {
