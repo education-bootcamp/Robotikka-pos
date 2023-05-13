@@ -11,6 +11,6 @@ public interface ProductBo extends SuperBo {
     public boolean updateProduct(ProductDto dto);
     public boolean deleteProduct(int code);
     public ProductDto findProduct(int code);
-    public List<ProductDto> findAllProducts();
+    public List<ProductDto> findAllProducts() throws SQLException, ClassNotFoundException;
     public int getLastProductId() throws SQLException, ClassNotFoundException;
 }

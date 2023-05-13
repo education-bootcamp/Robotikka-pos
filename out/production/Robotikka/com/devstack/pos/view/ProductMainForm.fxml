@@ -51,12 +51,12 @@
                </font>
             </JFXButton>
             <TextField layoutX="14.0" layoutY="222.0" prefHeight="25.0" prefWidth="411.0" promptText="search here" />
-            <TableView layoutX="14.0" layoutY="254.0" prefHeight="183.0" prefWidth="411.0">
+            <TableView fx:id="tbl" layoutX="14.0" layoutY="254.0" prefHeight="183.0" prefWidth="411.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="#" />
-                <TableColumn prefWidth="120.0" text="Desc" />
-                  <TableColumn prefWidth="122.0" text="Show more" />
-                  <TableColumn prefWidth="93.0" text="Delete" />
+                <TableColumn fx:id="colProductId" prefWidth="75.0" text="#" />
+                <TableColumn fx:id="colProductDesc" prefWidth="120.0" text="Desc" />
+                  <TableColumn fx:id="colProductShowMore" prefWidth="122.0" text="Show more" />
+                  <TableColumn fx:id="colProductDelete" prefWidth="93.0" text="Delete" />
               </columns>
             </TableView>
          </children>
@@ -73,8 +73,8 @@
             <TableColumn prefWidth="69.0" text="Delete" />
          </columns>
       </TableView>
-      <TextField layoutX="472.0" layoutY="59.0" prefHeight="25.0" prefWidth="148.0" promptText="Selected Product Code" />
-      <TextArea layoutX="472.0" layoutY="91.0" prefHeight="126.0" prefWidth="507.0" promptText="Description">
+      <TextField fx:id="txtSelectedProdId" editable="false" layoutX="472.0" layoutY="59.0" prefHeight="25.0" prefWidth="148.0" promptText="Selected Product Code" />
+      <TextArea fx:id="txtSelectedProdDescription" editable="false" layoutX="472.0" layoutY="91.0" prefHeight="126.0" prefWidth="507.0" promptText="Description">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>

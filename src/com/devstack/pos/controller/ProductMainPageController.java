@@ -3,13 +3,17 @@ package com.devstack.pos.controller;
 import com.devstack.pos.bo.BoFactory;
 import com.devstack.pos.bo.custom.ProductBo;
 import com.devstack.pos.bo.custom.impl.ProductBoImpl;
+import com.devstack.pos.dto.CustomerDto;
 import com.devstack.pos.dto.ProductDto;
 import com.devstack.pos.enums.BoType;
+import com.devstack.pos.view.tm.ProductTm;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 
@@ -17,6 +21,13 @@ public class ProductMainPageController {
     public TextArea txtProductDescription;
     public JFXButton btnSaveUpdate;
     public JFXTextField txtProductCode;
+    public TableView<ProductTm> tbl;
+    public TableColumn colProductId;
+    public TableColumn colProductDesc;
+    public TableColumn colProductShowMore;
+    public TableColumn colProductDelete;
+    public TextField txtSelectedProdId;
+    public TextArea txtSelectedProdDescription;
 
 
     ProductBo bo = BoFactory.getInstance().getBo(BoType.PRODUCT);
@@ -24,10 +35,31 @@ public class ProductMainPageController {
 
     private String searchText = "";
 
-    public void initialize() {
+    public void initialize() throws SQLException, ClassNotFoundException {
+
+
+        colProductId.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colProductDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colProductShowMore.setCellValueFactory(new PropertyValueFactory<>("showMore"));
+        colProductDelete.setCellValueFactory(new PropertyValueFactory<>("delete"));
+
         //--- load new Product Id
         loadProductId();
+        loadAllProducts(searchText);
         //--- load new Product Id
+
+        tbl.getSelectionModel().selectedItemProperty().addListener((observable,
+                                                                    oldValue,
+                                                                    newValue
+        ) -> {
+            setData(newValue);
+        });
+
+    }
+
+    private void setData(ProductTm newValue) {
+        txtSelectedProdId.setText(String.valueOf(newValue.getCode()));
+        txtSelectedProdDescription.setText(newValue.getDescription());
     }
 
     private void loadProductId() {
@@ -71,7 +103,16 @@ public class ProductMainPageController {
 
     }
 
-    private void loadAllProducts(String searchText) {
+    private void loadAllProducts(String searchText) throws SQLException, ClassNotFoundException {
+        ObservableList<ProductTm> tms = FXCollections.observableArrayList();
+        for (ProductDto dto : bo.findAllProducts()
+        ) {
+            Button showMore = new Button("Show more");
+            Button delete = new Button("Delete");
+            ProductTm tm = new ProductTm(dto.getCode(), dto.getDescription(), showMore, delete);
+            tms.add(tm);
+        }
+        tbl.setItems(tms);
     }
 
     private void clearFields() {
@@ -81,5 +122,8 @@ public class ProductMainPageController {
     }
 
     public void btnAddNewOnAction(ActionEvent actionEvent) {
+    }
+
+    public void newBatchOnAction(ActionEvent actionEvent) {
     }
 }
