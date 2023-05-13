@@ -1,7 +1,7 @@
 package com.devstack.pos.entity;
 
-public class Product {
-    private int code;
+public class Product implements SuperEntity{
+    private int code ;
     private String description;
 
     public Product() {
