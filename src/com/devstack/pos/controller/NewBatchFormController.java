@@ -47,7 +47,7 @@ public class NewBatchFormController {
     private ProductDetailBo productDetailBo = BoFactory.getInstance().getBo(BoType.PRODUCT_DETAIL);
 
     public void initialize() throws WriterException {
-        setQRCode();
+
     }
 
     private void setQRCode() throws WriterException {
@@ -67,15 +67,40 @@ public class NewBatchFormController {
         barcodeImage.setImage(image);
     }
 
-    public void setDetails(int code, String description, Stage stage, boolean state, ProductDetailTm tm) {
+    public void setDetails(int code, String description, Stage stage,
+                           boolean state, ProductDetailTm tm) {
         this.stage=stage;
 
         if (state){
-            productDetailBo.findAllProductDetails()
+            try {
+                ProductDetailDto productDetail = productDetailBo.findProductDetail(tm.getCode());
+
+                if (productDetail!=null){
+                    txtQty.setText(String.valueOf(productDetail.getQtyOnHand()));
+                    txtBuyingPrice.setText(String.valueOf(productDetail.getBuyingPrice()));
+                    txtSellingPrice.setText(String.valueOf(productDetail.getSellingPrice()));
+                    txtShowPrice.setText(String.valueOf(productDetail.getShowPrice()));
+                    rBtnYes.setSelected(productDetail.isDiscountAvailability());
+
+                    // QR ?
+
+                }else{
+                    stage.close();
+                }
+
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }else{
-            txtProductCode.setText(String.valueOf(code));
-            txtSelectedProdDescription.setText(description);
+            try {
+                setQRCode();
+            } catch (WriterException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        txtProductCode.setText(String.valueOf(code));
+        txtSelectedProdDescription.setText(description);
 
     }
 

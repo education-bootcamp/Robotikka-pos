@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDetailBoImpl implements ProductDetailBo {
-    ProductDetailDao dao= DaoFactory.getInstance().getDao(DaoType.PRODUCT_DETAIL);
+    ProductDetailDao dao = DaoFactory.getInstance().getDao(DaoType.PRODUCT_DETAIL);
+
     @Override
     public boolean saveProductDetail(ProductDetailDto dto) throws SQLException, ClassNotFoundException {
         return dao.save(
@@ -28,12 +29,12 @@ public class ProductDetailBoImpl implements ProductDetailBo {
     @Override
     public List<ProductDetailDto> findAllProductDetails(int productCode) throws SQLException, ClassNotFoundException {
         List<ProductDetailDto> dtos = new ArrayList<>();
-        for (ProductDetail d:dao.findAllProductDetails(productCode)
-             ) {
+        for (ProductDetail d : dao.findAllProductDetails(productCode)
+        ) {
             dtos.add(
                     new ProductDetailDto(
-                            d.getCode(),d.getBarcode(),d.getQtyOnHand(),d.getSellingPrice(),
-                            d.getShowPrice(),d.getBuyingPrice(),d.getProductCode(),
+                            d.getCode(), d.getBarcode(), d.getQtyOnHand(), d.getSellingPrice(),
+                            d.getShowPrice(), d.getBuyingPrice(), d.getProductCode(),
                             d.isDiscountAvailability()
                     )
             );
@@ -43,6 +44,14 @@ public class ProductDetailBoImpl implements ProductDetailBo {
 
     @Override
     public ProductDetailDto findProductDetail(String code) throws SQLException, ClassNotFoundException {
+        ProductDetail d = dao.findProductDetail(code);
+        if (d != null) {
+            return new ProductDetailDto(
+                    d.getCode(), d.getBarcode(), d.getQtyOnHand(), d.getSellingPrice(),
+                    d.getShowPrice(), d.getBuyingPrice(), d.getProductCode(),
+                    d.isDiscountAvailability()
+            );
+        }
         return null;
     }
 }
