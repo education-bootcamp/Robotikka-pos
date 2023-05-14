@@ -33,6 +33,7 @@ public class ProductMainPageController {
     public TableColumn colProductDelete;
     public TextField txtSelectedProdId;
     public TextArea txtSelectedProdDescription;
+    public JFXButton btnNewBatch;
 
 
     ProductBo bo = BoFactory.getInstance().getBo(BoType.PRODUCT);
@@ -53,18 +54,18 @@ public class ProductMainPageController {
         loadAllProducts(searchText);
         //--- load new Product Id
 
-        tbl.getSelectionModel().selectedItemProperty().addListener((observable,
-                                                                    oldValue,
-                                                                    newValue
-        ) -> {
-            setData(newValue);
-        });
+        tbl.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    setData(newValue);
+                });
 
     }
 
     private void setData(ProductTm newValue) {
         txtSelectedProdId.setText(String.valueOf(newValue.getCode()));
         txtSelectedProdDescription.setText(newValue.getDescription());
+        btnNewBatch.setDisable(false);
     }
 
     private void loadProductId() {
@@ -130,10 +131,21 @@ public class ProductMainPageController {
     }
 
     public void newBatchOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = new Stage();
-        Parent load = FXMLLoader.load(getClass().getResource("../view/NewBatchForm.fxml"));
-        stage.setScene(new Scene(load));
-        stage.show();
-        stage.centerOnScreen();
+        if (!txtSelectedProdId.getText().isEmpty()){
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(getClass()
+                            .getResource("../view/NewBatchForm.fxml"));
+            Parent parent = fxmlLoader.load();
+            NewBatchFormController controller = fxmlLoader.getController();
+            controller.setProductCode(Integer.parseInt(txtSelectedProdId.getText())
+                    ,txtSelectedProdDescription.getText());
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.show();
+            stage.centerOnScreen();
+
+        }else{
+            new Alert(Alert.AlertType.WARNING,"Please select a valid one!");
+        }
     }
 }

@@ -79,7 +79,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </TextArea>
-      <JFXButton buttonType="RAISED" layoutX="860.0" layoutY="59.0" onAction="#newBatchOnAction" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: #2980b9;" text="+ New Batch" textFill="WHITE">
+      <JFXButton fx:id="btnNewBatch" buttonType="RAISED" disable="true" layoutX="860.0" layoutY="59.0" onAction="#newBatchOnAction" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: #2980b9;" text="+ New Batch" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
