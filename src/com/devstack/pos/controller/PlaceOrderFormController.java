@@ -195,7 +195,7 @@ public class PlaceOrderFormController {
             );
             if (p != null) {
                 txtDescription.setText(p.getDescription());
-                txtDiscount.setText(String.valueOf(0));
+                txtDiscount.setText(String.valueOf(250));
                 txtSellingPrice.setText(String.valueOf(p.getDto().getSellingPrice()));
                 txtShowPrice.setText(String.valueOf(p.getDto().getShowPrice()));
                 txtQtyOnHand.setText(String.valueOf(p.getDto().getQtyOnHand()));
@@ -215,8 +215,15 @@ public class PlaceOrderFormController {
 
     public void addToCart(ActionEvent actionEvent) {
         int qty = Integer.parseInt(txtQty.getText());
-        double sellingPrice = Double.parseDouble(txtSellingPrice.getText());
+        /*if (customer.cardType.equals(CardType.GOLD.name())){
+            //
+        }*/
+        double discount = 250;//=>
+
+        double sellingPrice = (Double.parseDouble(txtSellingPrice.getText())-discount);
         double totalCost = qty * sellingPrice;
+
+
         CartTm selectedCartTm = isExists(txtBarcode.getText());
         if (selectedCartTm != null) {
             selectedCartTm.setQty(qty + selectedCartTm.getQty());
