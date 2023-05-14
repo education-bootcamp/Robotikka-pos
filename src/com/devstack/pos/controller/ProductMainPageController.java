@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class ProductMainPageController {
     public TableColumn colPDDAvailability;
     public TableColumn colPDShowPrice;
     public TableColumn colPDDelete;
+    public AnchorPane context;
 
 
     ProductBo bo = BoFactory.getInstance().getBo(BoType.PRODUCT);
@@ -83,9 +85,9 @@ public class ProductMainPageController {
         tblDetail.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    try{
+                    try {
                         loadExternalUi(true, newValue);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -113,7 +115,8 @@ public class ProductMainPageController {
     }
 
 
-    public void btnBackToHomeOnAction(ActionEvent actionEvent) {
+    public void btnBackToHomeOnAction(ActionEvent actionEvent) throws IOException {
+        setUi("DashboardForm");
     }
 
     public void btnNewProductOnAction(ActionEvent actionEvent) {
@@ -169,8 +172,9 @@ public class ProductMainPageController {
     public void newBatchOnAction(ActionEvent actionEvent) throws IOException {
         loadExternalUi(false, null);
     }
+
     private void loadExternalUi(boolean state, ProductDetailTm tm) throws IOException {
-        if (!txtSelectedProdId.getText().isEmpty()){
+        if (!txtSelectedProdId.getText().isEmpty()) {
             Stage stage = new Stage();
             FXMLLoader fxmlLoader =
                     new FXMLLoader(getClass()
@@ -178,27 +182,35 @@ public class ProductMainPageController {
             Parent parent = fxmlLoader.load();
             NewBatchFormController controller = fxmlLoader.getController();
             controller.setDetails(Integer.parseInt(txtSelectedProdId.getText())
-                    ,txtSelectedProdDescription.getText(),stage,state,tm);
+                    , txtSelectedProdDescription.getText(), stage, state, tm);
             stage.setScene(new Scene(parent));
             stage.show();
             stage.centerOnScreen();
-        }else{
-            new Alert(Alert.AlertType.WARNING,"Please select a valid one!");
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please select a valid one!");
         }
     }
 
     private void loadBatchData(int code) throws SQLException, ClassNotFoundException {
         ObservableList<ProductDetailTm> obList = FXCollections.observableArrayList();
-        for (ProductDetailDto p:detailBo.findAllProductDetails(code)
-             ) {
+        for (ProductDetailDto p : detailBo.findAllProductDetails(code)
+        ) {
             Button btn = new Button("Delete");
             ProductDetailTm tm = new ProductDetailTm(
-                    p.getCode(),p.getQtyOnHand(),p.getSellingPrice(),
-                    p.getBuyingPrice(),p.isDiscountAvailability(),
-                    p.getShowPrice(),btn
+                    p.getCode(), p.getQtyOnHand(), p.getSellingPrice(),
+                    p.getBuyingPrice(), p.isDiscountAvailability(),
+                    p.getShowPrice(), btn
             );
             obList.add(tm);
         }
         tblDetail.setItems(obList);
+    }
+
+    private void setUi(String url) throws IOException {
+        Stage stage = (Stage) context.getScene().getWindow();
+        stage.centerOnScreen();
+        stage.setScene(
+                new Scene(FXMLLoader.load(getClass().getResource("../view/" + url + ".fxml")))
+        );
     }
 }

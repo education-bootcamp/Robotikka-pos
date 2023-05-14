@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import org.apache.commons.codec.binary.Base64;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -82,7 +83,10 @@ public class NewBatchFormController {
                     txtShowPrice.setText(String.valueOf(productDetail.getShowPrice()));
                     rBtnYes.setSelected(productDetail.isDiscountAvailability());
 
-                    // QR ?
+                    byte[] data = Base64.decodeBase64(productDetail.getBarcode());
+                    barcodeImage.setImage(
+                            new Image(new ByteArrayInputStream(data))
+                    );
 
                 }else{
                     stage.close();
