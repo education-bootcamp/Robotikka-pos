@@ -2,10 +2,14 @@ package com.devstack.pos.controller;
 
 import com.devstack.pos.bo.BoFactory;
 import com.devstack.pos.bo.custom.CustomerBo;
+import com.devstack.pos.bo.custom.OrderDetailBo;
 import com.devstack.pos.bo.custom.ProductDetailBo;
 import com.devstack.pos.dto.CustomerDto;
+import com.devstack.pos.dto.ItemDetailDto;
+import com.devstack.pos.dto.OrderDetailDto;
 import com.devstack.pos.dto.ProductDetailJoinDto;
 import com.devstack.pos.enums.BoType;
+import com.devstack.pos.util.UserSessionData;
 import com.devstack.pos.view.tm.CartTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +23,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 public class PlaceOrderFormController {
     public AnchorPane context;
@@ -50,6 +57,7 @@ public class PlaceOrderFormController {
 
     CustomerBo bo = BoFactory.getInstance().getBo(BoType.CUSTOMER);
     private ProductDetailBo productDetailBo = BoFactory.getInstance().getBo(BoType.PRODUCT_DETAIL);
+    private OrderDetailBo orderDetailBo = BoFactory.getInstance().getBo(BoType.ORDER_DETAIL);
 
 
     public void initialize() {
@@ -205,5 +213,41 @@ public class PlaceOrderFormController {
             total += tm.getTotalCost();
         }
         txtTotal.setText(total + " /=");
+    }
+
+    public void btnCompleteOrder(ActionEvent actionEvent) {
+
+        ArrayList<ItemDetailDto> dtoList = new ArrayList<>();
+        double discount = 0;
+        for (CartTm tm : tms
+        ) {
+            dtoList.add(new ItemDetailDto(tm.getCode(), tm.getQty(), tm.getDiscount(),
+                    tm.getTotalCost()));
+            discount += tm.getDiscount();
+        }
+
+        OrderDetailDto dto = new OrderDetailDto(
+                new Random().nextInt(100001),
+                new Date(),
+                Double.parseDouble(txtTotal.getText().split(" /=")[0]),
+                txtEmail.getText(),
+                discount,
+                UserSessionData.email,
+                dtoList
+        );
+        try {
+            if(orderDetailBo.makeOrder(dto)){
+                new Alert(Alert.AlertType.CONFIRMATION, "Customer Updated!").show();
+                clearFields();
+            }else{
+                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+        }
+    }
+
+    private void clearFields() {
     }
 }

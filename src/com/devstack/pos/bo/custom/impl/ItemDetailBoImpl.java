@@ -10,11 +10,5 @@ import com.devstack.pos.enums.DaoType;
 import java.sql.SQLException;
 
 public class ItemDetailBoImpl implements ItemDetailBo {
-    ItemDetailDao dao= DaoFactory.getInstance().getDao(DaoType.ITEM_DETAIL);
-    @Override
-    public boolean saveItemDetail(ItemDetailDto d) throws SQLException, ClassNotFoundException {
-        return dao.save(
-                new ItemDetail(d.getDetailCode(),d.getOrder(),d.getQty(),d.getDiscount(),d.getAmount())
-        );
-    }
+
 }
