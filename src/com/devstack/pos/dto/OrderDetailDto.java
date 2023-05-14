@@ -1,11 +1,11 @@
-package com.devstack.pos.entity;
+package com.devstack.pos.dto;
 
-import com.devstack.pos.dto.ItemDetailDto;
+import com.devstack.pos.entity.SuperEntity;
 
 import java.util.Date;
 import java.util.List;
 
-public class OrderDetail implements SuperEntity {
+public class OrderDetailDto implements SuperEntity {
     private int code;
     private Date issuedDate;
     private double totalCost;
@@ -13,19 +13,19 @@ public class OrderDetail implements SuperEntity {
     private double discount;
     private String operatorEmail;
 
-    private List<ItemDetail> itemDetail;
+    private List<ItemDetailDto> itemDetailDto;
 
-    public OrderDetail() {
+    public OrderDetailDto() {
     }
 
-    public OrderDetail(int code, Date issuedDate, double totalCost, String customerEmail, double discount, String operatorEmail, List<ItemDetail> itemDetail) {
+    public OrderDetailDto(int code, Date issuedDate, double totalCost, String customerEmail, double discount, String operatorEmail, List<ItemDetailDto> itemDetailDto) {
         this.code = code;
         this.issuedDate = issuedDate;
         this.totalCost = totalCost;
         this.customerEmail = customerEmail;
         this.discount = discount;
         this.operatorEmail = operatorEmail;
-        this.itemDetail = itemDetail;
+        this.itemDetailDto = itemDetailDto;
     }
 
     public int getCode() {
@@ -76,12 +76,12 @@ public class OrderDetail implements SuperEntity {
         this.operatorEmail = operatorEmail;
     }
 
-    public List<ItemDetail> getItemDetailDto() {
-        return itemDetail;
+    public List<ItemDetailDto> getItemDetailDto() {
+        return itemDetailDto;
     }
 
-    public void setItemDetailDto(List<ItemDetail> itemDetail) {
-        this.itemDetail = itemDetail;
+    public void setItemDetailDto(List<ItemDetailDto> itemDetailDto) {
+        this.itemDetailDto = itemDetailDto;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class OrderDetail implements SuperEntity {
                 ", customerEmail='" + customerEmail + '\'' +
                 ", discount=" + discount +
                 ", operatorEmail='" + operatorEmail + '\'' +
-                ", itemDetailDto=" + itemDetail +
+                ", itemDetailDto=" + itemDetailDto +
                 '}';
     }
 }
