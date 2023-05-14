@@ -40,4 +40,9 @@ public class ProductDetailBoImpl implements ProductDetailBo {
         }
         return dtos;
     }
+
+    @Override
+    public ProductDetailDto findProductDetail(String code) throws SQLException, ClassNotFoundException {
+        return null;
+    }
 }

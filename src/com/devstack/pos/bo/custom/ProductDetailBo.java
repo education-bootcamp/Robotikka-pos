@@ -12,4 +12,5 @@ import java.util.List;
 public interface ProductDetailBo extends SuperBo {
     public boolean saveProductDetail(ProductDetailDto dto) throws SQLException, ClassNotFoundException;
     public List<ProductDetailDto> findAllProductDetails(int productCode) throws SQLException, ClassNotFoundException;
+    public ProductDetailDto findProductDetail(String code) throws SQLException, ClassNotFoundException;
 }

@@ -80,6 +80,16 @@ public class ProductMainPageController {
                 .addListener((observable, oldValue, newValue) -> {
                     setData(newValue);
                 });
+        tblDetail.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    try{
+                        loadExternalUi(true, newValue);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                });
 
     }
 
@@ -157,6 +167,9 @@ public class ProductMainPageController {
     }
 
     public void newBatchOnAction(ActionEvent actionEvent) throws IOException {
+        loadExternalUi(false, null);
+    }
+    private void loadExternalUi(boolean state, ProductDetailTm tm) throws IOException {
         if (!txtSelectedProdId.getText().isEmpty()){
             Stage stage = new Stage();
             FXMLLoader fxmlLoader =
@@ -165,7 +178,7 @@ public class ProductMainPageController {
             Parent parent = fxmlLoader.load();
             NewBatchFormController controller = fxmlLoader.getController();
             controller.setDetails(Integer.parseInt(txtSelectedProdId.getText())
-                    ,txtSelectedProdDescription.getText(),stage);
+                    ,txtSelectedProdDescription.getText(),stage,state,tm);
             stage.setScene(new Scene(parent));
             stage.show();
             stage.centerOnScreen();

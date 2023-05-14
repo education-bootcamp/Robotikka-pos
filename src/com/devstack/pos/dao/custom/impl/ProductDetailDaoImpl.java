@@ -1,5 +1,6 @@
 package com.devstack.pos.dao.custom.impl;
 
+import com.devstack.pos.dao.CrudDao;
 import com.devstack.pos.dao.CrudUtil;
 import com.devstack.pos.dao.custom.ProductDetailDao;
 import com.devstack.pos.entity.ProductDetail;
@@ -47,17 +48,32 @@ public class ProductDetailDaoImpl implements ProductDetailDao {
 
     @Override
     public List<ProductDetail> findAllProductDetails(int productCode) throws SQLException, ClassNotFoundException {
-       ResultSet set= CrudUtil.execute("SELECT * FROM product_detail WHERE product_code=?", productCode);
-       List<ProductDetail> list = new ArrayList<>();
-        while (set.next()){
+        ResultSet set = CrudUtil.execute("SELECT * FROM product_detail WHERE product_code=?", productCode);
+        List<ProductDetail> list = new ArrayList<>();
+        while (set.next()) {
             list.add(new ProductDetail(
-                    set.getString(1),set.getString(2),
-                    set.getInt(3),set.getDouble(4),
-                    set.getDouble(6),set.getDouble(8),
+                    set.getString(1), set.getString(2),
+                    set.getInt(3), set.getDouble(4),
+                    set.getDouble(6), set.getDouble(8),
                     set.getInt(7),
                     set.getBoolean(5)
             ));
         }
         return list;
+    }
+
+    @Override
+    public ProductDetail findProductDetail(String code) throws SQLException, ClassNotFoundException {
+        ResultSet set = CrudUtil.execute("SELECT * FROM product_detail WHERE code=?", code);
+        if (set.next()) {
+           return new ProductDetail(
+                   set.getString(1), set.getString(2),
+                   set.getInt(3), set.getDouble(4),
+                   set.getDouble(6), set.getDouble(8),
+                   set.getInt(7),
+                   set.getBoolean(5)
+           );
+        }
+        return null;
     }
 }

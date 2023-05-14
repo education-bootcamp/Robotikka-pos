@@ -6,6 +6,7 @@ import com.devstack.pos.dto.CustomerDto;
 import com.devstack.pos.dto.ProductDetailDto;
 import com.devstack.pos.enums.BoType;
 import com.devstack.pos.util.QrDataGenerator;
+import com.devstack.pos.view.tm.ProductDetailTm;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -66,10 +67,16 @@ public class NewBatchFormController {
         barcodeImage.setImage(image);
     }
 
-    public void setDetails(int code, String description, Stage stage) {
-        txtProductCode.setText(String.valueOf(code));
-        txtSelectedProdDescription.setText(description);
+    public void setDetails(int code, String description, Stage stage, boolean state, ProductDetailTm tm) {
         this.stage=stage;
+
+        if (state){
+            productDetailBo.findAllProductDetails()
+        }else{
+            txtProductCode.setText(String.valueOf(code));
+            txtSelectedProdDescription.setText(description);
+        }
+
     }
 
     public void saveBatch(ActionEvent actionEvent) throws IOException {
