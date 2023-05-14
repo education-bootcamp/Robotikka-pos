@@ -141,21 +141,21 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtQty" layoutX="988.0" layoutY="271.0" prefHeight="29.0" prefWidth="93.0" promptText="QTY" style="-fx-border-color: #2980b9;">
+      <TextField fx:id="txtQty" layoutX="988.0" layoutY="271.0" onAction="#addToCart" prefHeight="29.0" prefWidth="93.0" promptText="QTY" style="-fx-border-color: #2980b9;">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <TableView layoutX="26.0" layoutY="333.0" prefHeight="200.0" prefWidth="1057.0">
+      <TableView fx:id="tblCart" layoutX="26.0" layoutY="333.0" prefHeight="200.0" prefWidth="1057.0">
         <columns>
-          <TableColumn prefWidth="125.0" text="#" />
-          <TableColumn prefWidth="269.99998474121094" text="Description" />
-            <TableColumn prefWidth="112.0" text="Selling Price" />
-            <TableColumn prefWidth="109.0" text="Discount" />
-            <TableColumn prefWidth="91.0" text="Show Price" />
-            <TableColumn prefWidth="101.0" text="QTY" />
-            <TableColumn prefWidth="115.0" text="Total Cost" />
-            <TableColumn prefWidth="132.0" text="Operation" />
+          <TableColumn fx:id="colCode" prefWidth="125.0" text="#" />
+          <TableColumn fx:id="colDesc" prefWidth="269.99998474121094" text="Description" />
+            <TableColumn fx:id="colSelPrice" prefWidth="112.0" text="Selling Price" />
+            <TableColumn fx:id="colSelDisc" prefWidth="109.0" text="Discount" />
+            <TableColumn fx:id="colSelShPrice" prefWidth="91.0" text="Show Price" />
+            <TableColumn fx:id="colSelQty" prefWidth="101.0" text="QTY" />
+            <TableColumn fx:id="colSelTotal" prefWidth="115.0" text="Total Cost" />
+            <TableColumn fx:id="colSelOperation" prefWidth="132.0" text="Operation" />
         </columns>
       </TableView>
       <JFXButton buttonType="RAISED" layoutX="935.0" layoutY="541.0" prefHeight="29.0" prefWidth="148.0" style="-fx-background-color: #2980b9;" text="Complete Order" textFill="WHITE">
