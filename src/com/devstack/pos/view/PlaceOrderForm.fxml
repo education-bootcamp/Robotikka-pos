@@ -171,7 +171,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="130.0" layoutY="547.0" text="0.00 /=" textFill="#c0392b">
+      <Label fx:id="txtTotal" layoutX="130.0" layoutY="547.0" text="0.00 /=" textFill="#c0392b">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

@@ -46,6 +46,7 @@ public class PlaceOrderFormController {
     public TableColumn colSelQty;
     public TableColumn colSelTotal;
     public TableColumn colSelOperation;
+    public Label txtTotal;
 
     CustomerBo bo = BoFactory.getInstance().getBo(BoType.CUSTOMER);
     private ProductDetailBo productDetailBo = BoFactory.getInstance().getBo(BoType.PRODUCT_DETAIL);
@@ -161,11 +162,30 @@ public class PlaceOrderFormController {
                     qty,
                     totalCost,
                     btn);
+
+            btn.setOnAction((e) -> {
+                tms.remove(tm);
+                tblCart.refresh();
+                setTotal();
+            });
+
             tms.add(tm);
+            clear();
             tblCart.setItems(tms);
+            setTotal();
         }
+    }
 
-
+    private void clear() {
+        txtDescription.clear();
+        txtSellingPrice.clear();
+        txtDiscount.clear();
+        txtShowPrice.clear();
+        txtQtyOnHand.clear();
+        txtBuyingPrice.clear();
+        txtQty.clear();
+        txtBarcode.clear();
+        txtBarcode.requestFocus();
     }
 
     private CartTm isExists(String code) {
@@ -176,5 +196,14 @@ public class PlaceOrderFormController {
             }
         }
         return null;
+    }
+
+    private void setTotal() {
+        double total = 0;
+        for (CartTm tm : tms
+        ) {
+            total += tm.getTotalCost();
+        }
+        txtTotal.setText(total + " /=");
     }
 }
