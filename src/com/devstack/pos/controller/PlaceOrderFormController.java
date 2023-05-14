@@ -51,7 +51,7 @@ public class PlaceOrderFormController {
     private ProductDetailBo productDetailBo = BoFactory.getInstance().getBo(BoType.PRODUCT_DETAIL);
 
 
-    public void initialize(){
+    public void initialize() {
         colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         colDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
         colSelPrice.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
@@ -90,6 +90,7 @@ public class PlaceOrderFormController {
             stage.centerOnScreen();
         }
     }
+
     public void searchCustomer(ActionEvent actionEvent) {
         try {
             CustomerDto customer = bo.findCustomer(txtEmail.getText());
@@ -115,13 +116,13 @@ public class PlaceOrderFormController {
     public void newLoyaltyOnAction(ActionEvent actionEvent) {
     }
 
-    public void loadProduct(ActionEvent actionEvent){
+    public void loadProduct(ActionEvent actionEvent) {
 
         try {
-            ProductDetailJoinDto p  = productDetailBo.findProductJoinDetail(
+            ProductDetailJoinDto p = productDetailBo.findProductJoinDetail(
                     txtBarcode.getText()
             );
-            if (p!=null){
+            if (p != null) {
                 txtDescription.setText(p.getDescription());
                 txtDiscount.setText(String.valueOf(0));
                 txtSellingPrice.setText(String.valueOf(p.getDto().getSellingPrice()));
@@ -129,7 +130,7 @@ public class PlaceOrderFormController {
                 txtQtyOnHand.setText(String.valueOf(p.getDto().getQtyOnHand()));
                 txtBuyingPrice.setText(String.valueOf(p.getDto().getBuyingPrice()));
                 txtQty.requestFocus();
-            }else{
+            } else {
                 new Alert(Alert.AlertType.WARNING, "Can't Find the Product!").show();
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -139,24 +140,41 @@ public class PlaceOrderFormController {
 
     }
 
-    ObservableList<CartTm> tms= FXCollections.observableArrayList();
+    ObservableList<CartTm> tms = FXCollections.observableArrayList();
+
     public void addToCart(ActionEvent actionEvent) {
-        int qty=Integer.parseInt(txtQty.getText());
-        double sellingPrice= Double.parseDouble(txtSellingPrice.getText());
-        double totalCost = qty*sellingPrice;
-        Button btn = new Button("Remove");
+        int qty = Integer.parseInt(txtQty.getText());
+        double sellingPrice = Double.parseDouble(txtSellingPrice.getText());
+        double totalCost = qty * sellingPrice;
+        CartTm selectedCartTm = isExists(txtBarcode.getText());
+        if (selectedCartTm != null) {
+            selectedCartTm.setQty(qty + selectedCartTm.getQty());
+            selectedCartTm.setTotalCost(totalCost + selectedCartTm.getTotalCost());
+            tblCart.refresh();
+        } else {
+            Button btn = new Button("Remove");
+            CartTm tm = new CartTm(txtBarcode.getText(),
+                    txtDescription.getText(),
+                    Double.parseDouble(txtDiscount.getText()),
+                    sellingPrice,
+                    Double.parseDouble(txtShowPrice.getText()),
+                    qty,
+                    totalCost,
+                    btn);
+            tms.add(tm);
+            tblCart.setItems(tms);
+        }
 
-        CartTm tm = new CartTm(txtBarcode.getText(),
-                txtDescription.getText(),
-                Double.parseDouble(txtDiscount.getText()),
-                sellingPrice,
-                Double.parseDouble(txtShowPrice.getText()),
-                qty,
-                totalCost,
-                btn);
-        tms.add(tm);
 
+    }
 
-        tblCart.setItems(tms);
+    private CartTm isExists(String code) {
+        for (CartTm tm : tms
+        ) {
+            if (tm.getCode().equals(code)) {
+                return tm;
+            }
+        }
+        return null;
     }
 }
